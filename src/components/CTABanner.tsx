@@ -1,65 +1,62 @@
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useInView, scrollToSection } from '@/lib/utils';
+import { Sparkles, ArrowRight, ShieldCheck, Mail } from 'lucide-react';
+import { scrollToSection } from '@/lib/utils';
 
 export default function CTABanner() {
-  const { ref, inView } = useInView<HTMLDivElement>();
-
   return (
-    <section className="relative overflow-hidden px-5 py-20 sm:px-8 sm:py-28">
-      <div ref={ref} className="relative mx-auto max-w-6xl">
-        <div className="relative overflow-hidden rounded-3xl">
-          {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-pitch-black via-[#1a0a0e] to-pitch-black" />
-          <div
-            className="absolute left-0 top-0 h-full w-1/2 rounded-full opacity-30 blur-[100px]"
-            style={{ background: 'radial-gradient(circle, #E51B36 0%, transparent 60%)' }}
-          />
-          <div
-            className="absolute right-0 bottom-0 h-full w-1/2 rounded-full opacity-20 blur-[100px]"
-            style={{ background: 'radial-gradient(circle, #168BFF 0%, transparent 60%)' }}
-          />
-          {/* Grid overlay */}
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-              backgroundSize: '40px 40px',
-            }}
-          />
-          {/* Border glow */}
-          <div className="absolute inset-0 rounded-3xl border border-pitch-red/20" />
+    <section className="relative bg-[#07080B] py-20 sm:py-28 px-5 sm:px-8 border-t border-white/5 overflow-hidden">
+      <div className="mx-auto max-w-6xl relative">
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#121420] via-[#0E1017] to-[#07080B] p-8 sm:p-16 shadow-2xl">
+          {/* Subtle background photo overlay */}
+          <div className="absolute inset-0 z-0 opacity-10">
+            <img
+              src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80"
+              alt="Atmospheric concert lights"
+              className="h-full w-full object-cover"
+            />
+          </div>
 
-          <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6 py-16 text-center sm:px-12 sm:py-24">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-              className="font-heading text-3xl font-bold leading-tight text-pitch-white sm:text-4xl md:text-5xl lg:text-6xl"
-            >
-              LET'S MAKE SOMETHING<br />
-              <span className="text-gradient-red">UNFORGETTABLE.</span>
-            </motion.h2>
+          <div className="relative z-10 max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs uppercase text-[#FF2E4D]">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>CUSTOM MUSIC CURATION SERVICE</span>
+            </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="max-w-xl text-lg text-pitch-gray"
-            >
-              Bring your next project to life with music that makes an impact.
-            </motion.p>
+            <h2 className="mt-4 font-display text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+              HAVE A SCENE YOU NEED TO SCORE THIS WEEK?
+            </h2>
 
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              onClick={() => scrollToSection('contact')}
-              className="group flex items-center gap-2 rounded-full bg-pitch-red px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:bg-white hover:text-pitch-red hover:shadow-2xl hover:shadow-pitch-red/30"
-            >
-              Start a Licensing Inquiry
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </motion.button>
+            <p className="mt-4 text-base text-[#A4A9B5] leading-relaxed">
+              Send us your scene description, storyboard, or reference tracks. Our creative sync
+              team delivers a tailored, pre-cleared playlist with stems within 12 hours.
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#FF2E4D] px-7 py-4 font-display text-xs font-bold uppercase tracking-wider text-white shadow-xl shadow-[#FF2E4D]/25 transition-all hover:bg-[#ff425f]"
+              >
+                <span>Initiate Free Curation Search</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+
+              <a
+                href="mailto:licensing@perfectpitchforeva.com"
+                className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-4 font-mono text-xs text-white transition-all hover:border-white/20 hover:bg-white/10"
+              >
+                <Mail className="h-4 w-4 text-[#FF2E4D]" />
+                <span>licensing@perfectpitchforeva.com</span>
+              </a>
+            </div>
+
+            <div className="mt-8 flex items-center gap-6 text-xs text-[#8E95A5] font-mono">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-emerald-400" /> Pre-cleared indemnified
+              </span>
+              <span>•</span>
+              <span>No search fees</span>
+              <span>•</span>
+              <span>24h Turnaround</span>
+            </div>
           </div>
         </div>
       </div>

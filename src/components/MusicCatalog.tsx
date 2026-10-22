@@ -1,206 +1,239 @@
 import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, Search, ArrowRight, Music4, Clock, Sparkles } from 'lucide-react';
+import { Play, Pause, Search, Layers, ArrowUpRight } from 'lucide-react';
 import { TRACKS, GENRE_FILTERS, type GenreFilter, type Track } from '@/data/tracks';
-import { useInView } from '@/lib/utils';
+import { audioEngine } from '@/lib/audioEngine';
+import { Waveform, LiveEqualizer } from './Waveform';
 
-export default function MusicCatalog({ onRequestLicense }: { onRequestLicense: (track: Track) => void }) {
-  const { ref, inView } = useInView<HTMLDivElement>();
-  const [activeFilter, setActiveFilter] = useState<GenreFilter>('All Tracks');
-  const [query, setQuery] = useState('');
-  const [playingId, setPlayingId] = useState<string | null>(null);
+export default function MusicCatalog({
+  onRequestLicense,
+  currentPlayingTrack,
+  isPlaying,
+}: {
+  onRequestLicense: (track: Track) => void;
+  currentPlayingTrack: Track | null;
+  isPlaying: boolean;
+}) {
+  const [activeGenre, setActiveGenre] = useState<GenreFilter>('All Tracks');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [expandedTrackId, setExpandedTrackId] = useState<string | null>(null);
 
   const filteredTracks = useMemo(() => {
     return TRACKS.filter((t) => {
-      const matchesGenre = activeFilter === 'All Tracks' || t.genre === activeFilter;
-      const q = query.trim().toLowerCase();
+      const matchesGenre = activeGenre === 'All Tracks' || t.genre === activeGenre;
+      const q = searchQuery.trim().toLowerCase();
       const matchesSearch =
         q === '' ||
         t.title.toLowerCase().includes(q) ||
         t.artist.toLowerCase().includes(q) ||
         t.genre.toLowerCase().includes(q) ||
-        t.mood.toLowerCase().includes(q);
+        t.mood.toLowerCase().includes(q) ||
+        t.scenes.some((s) => s.toLowerCase().includes(q));
+
       return matchesGenre && matchesSearch;
     });
-  }, [activeFilter, query]);
+  }, [activeGenre, searchQuery]);
 
-  const togglePlay = (id: string) => {
-    setPlayingId(playingId === id ? null : id);
+  const handleTogglePlay = (track: Track) => {
+    audioEngine.toggle(track);
+  };
+
+  const handleSeekTrack = (track: Track, ratio: number) => {
+    audioEngine.play(track);
+    audioEngine.seek(ratio);
   };
 
   return (
-    <section id="catalog" className="relative section-padding overflow-hidden">
-      <div
-        className="absolute left-1/4 top-0 h-96 w-96 rounded-full opacity-[0.08] blur-[120px]"
-        style={{ background: 'radial-gradient(circle, #E51B36 0%, transparent 70%)' }}
-      />
+    <section id="catalog" className="relative bg-[#07080B] py-16 sm:py-28 border-t border-white/5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 sm:pb-12 border-b border-white/10">
+          <div>
+            <span className="font-mono text-[10px] sm:text-xs uppercase text-[#FF2E4D] tracking-widest block mb-2">
+              CATALOG REPERTOIRE • 250+ TITLES
+            </span>
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold text-white">
+              MUSIC BUILT FOR THE SCREEN.
+            </h2>
+            <p className="mt-2 sm:mt-3 text-xs sm:text-base text-[#8E95A5] max-w-xl">
+              Audition pre-cleared master tracks with full isolated multi-tracks (stems).
+              Cleared for all media in perpetuity.
+            </p>
+          </div>
 
-      <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center"
-        >
-          <span className="text-xs font-semibold tracking-[0.3em] text-pitch-red">
-            DISCOVER THE SOUND
-          </span>
-          <h2 className="mt-4 font-heading text-3xl font-bold leading-tight text-pitch-white sm:text-4xl md:text-5xl">
-            Music That Brings Stories to Life.
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-pitch-gray">
-            Explore sounds for powerful storytelling, unforgettable campaigns, and compelling
-            visual experiences.
-          </p>
-        </motion.div>
-
-        {/* Search + Filters */}
-        <div className="mt-12 flex flex-col gap-6">
-          <div className="relative mx-auto w-full max-w-xl">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-pitch-gray" />
+          {/* Search Input: full width on mobile */}
+          <div className="relative w-full md:w-auto md:min-w-[280px]">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8E95A5]" />
             <input
               type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search tracks, genres, or moods..."
-              aria-label="Search tracks"
-              className="w-full rounded-full border border-white/10 bg-pitch-charcoal/60 py-3.5 pl-12 pr-4 text-pitch-white placeholder:text-pitch-gray/60 transition-all duration-300 focus:border-pitch-red/50 focus:outline-none focus:ring-2 focus:ring-pitch-red/20"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title, genre, tempo, mood..."
+              className="w-full rounded-xl border border-white/10 bg-[#0E1017] py-2.5 sm:py-3 pl-10 pr-4 font-mono text-xs text-white placeholder:text-[#8E95A5]/50 focus:border-[#FF2E4D] focus:outline-none"
             />
           </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            {GENRE_FILTERS.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300 ${
-                  activeFilter === filter
-                    ? 'border-pitch-red bg-pitch-red text-white'
-                    : 'border-white/10 bg-transparent text-pitch-gray hover:border-white/30 hover:text-pitch-white'
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Track list */}
-        <div className="mt-10 grid gap-4">
-          <AnimatePresence mode="popLayout">
-            {filteredTracks.map((track, i) => (
-              <motion.div
+        {/* Clean Genre Filter Tabs: Wrap smoothly on mobile */}
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-1.5 sm:gap-2">
+          {GENRE_FILTERS.map((genre) => (
+            <button
+              key={genre}
+              onClick={() => setActiveGenre(genre)}
+              className={`rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 font-display text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-colors duration-150 ${
+                activeGenre === genre
+                  ? 'bg-[#FF2E4D] text-white shadow-md shadow-[#FF2E4D]/25'
+                  : 'bg-[#0E1017] text-[#8E95A5] border border-white/5 hover:border-white/20 hover:text-white'
+              }`}
+            >
+              {genre}
+            </button>
+          ))}
+          <span className="ml-auto font-mono text-xs text-[#8E95A5] hidden sm:inline">
+            Showing <span className="text-white font-bold">{filteredTracks.length}</span> titles
+          </span>
+        </div>
+
+        {/* Track Rows with Mobile-Optimized Layout */}
+        <div className="mt-6 sm:mt-8 space-y-3">
+          {filteredTracks.map((track) => {
+            const isCurrent = currentPlayingTrack?.id === track.id;
+            const isCurrentPlaying = isCurrent && isPlaying;
+            const isExpanded = expandedTrackId === track.id;
+
+            return (
+              <div
                 key={track.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className={`group relative flex flex-col gap-4 overflow-hidden rounded-2xl border bg-pitch-charcoal/40 p-4 transition-all duration-300 hover:bg-pitch-charcoal/80 sm:flex-row sm:items-center sm:p-5 ${
-                  playingId === track.id ? 'border-pitch-red/40' : 'border-white/5 hover:border-white/10'
+                className={`group rounded-2xl border p-3.5 sm:p-5 transition-colors duration-200 will-change-transform ${
+                  isCurrent
+                    ? 'border-[#FF2E4D]/40 bg-[#121420] shadow-lg'
+                    : 'border-white/5 bg-[#0C0E14] hover:border-white/15 hover:bg-[#10121A]'
                 }`}
               >
-                {/* Cover art */}
-                <div className="flex items-center gap-4 sm:flex-1">
-                  <button
-                    onClick={() => togglePlay(track.id)}
-                    className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl"
-                    style={{
-                      background: `linear-gradient(135deg, ${track.gradient[0]}, ${track.gradient[1]})`,
-                    }}
-                    aria-label={playingId === track.id ? `Pause ${track.title}` : `Play ${track.title}`}
-                  >
-                    <div className="flex h-full w-full items-center justify-center">
-                      {playingId === track.id ? (
-                        <Pause className="h-6 w-6 text-white" fill="currentColor" />
-                      ) : (
-                        <Play className="h-6 w-6 text-white" fill="currentColor" />
-                      )}
-                    </div>
-                    <div className="absolute inset-0 bg-black/0 transition-opacity group-hover:bg-black/20" />
-                  </button>
-                  <div className="min-w-0">
-                    <h3 className="truncate font-heading text-lg font-semibold text-pitch-white">
-                      {track.title}
-                    </h3>
-                    <p className="truncate text-sm text-pitch-gray">{track.artist}</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-pitch-red/10 px-2.5 py-0.5 text-xs font-medium text-pitch-red">
-                        {track.genre}
-                      </span>
-                      <span className="text-xs text-pitch-gray">{track.mood}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Waveform mini preview */}
-                <div className="hidden items-center justify-center sm:flex sm:flex-shrink-0">
-                  <div className="flex h-8 items-center gap-[2px]">
-                    {track.waveform.slice(0, 20).map((bar, idx) => (
-                      <div
-                        key={idx}
-                        className="rounded-full"
-                        style={{
-                          width: 2.5,
-                          height: `${bar * 100}%`,
-                          backgroundColor: playingId === track.id ? track.gradient[0] : '#3a3e48',
-                          animation: playingId === track.id
-                            ? `wavePulse ${0.8 + (idx % 5) * 0.15}s ease-in-out infinite`
-                            : undefined,
-                          animationDelay: `${idx * 0.05}s`,
-                        }}
+                <div className="flex flex-col lg:flex-row lg:items-center gap-3.5 sm:gap-6">
+                  {/* Artwork + Play button + Info */}
+                  <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0 min-w-0">
+                    <div className="relative h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-[#161822]">
+                      <img
+                        src={track.coverImage}
+                        alt={track.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
-                    ))}
+                      <button
+                        onClick={() => handleTogglePlay(track)}
+                        className="absolute inset-0 flex items-center justify-center bg-black/40 text-white transition-opacity hover:bg-black/60"
+                        aria-label={isCurrentPlaying ? 'Pause track' : 'Play track'}
+                      >
+                        <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-[#FF2E4D] text-white shadow-md shadow-[#FF2E4D]/30 transition-transform active:scale-95">
+                          {isCurrentPlaying ? (
+                            <Pause className="h-4 w-4 fill-current" />
+                          ) : (
+                            <Play className="h-4 w-4 fill-current translate-x-0.5" />
+                          )}
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* Info */}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[#FF2E4D]">
+                          {track.genre}
+                        </span>
+                        <span className="font-mono text-[9px] uppercase text-emerald-400">
+                          ONE-STOP
+                        </span>
+                      </div>
+                      <h3 className="font-display text-sm sm:text-base lg:text-lg font-bold text-white truncate mt-0.5">
+                        {track.title}
+                      </h3>
+                      <p className="text-xs text-[#8E95A5] truncate">{track.artist}</p>
+                      <div className="flex items-center gap-2 font-mono text-[10px] sm:text-[11px] text-[#8E95A5] mt-0.5">
+                        <span>{track.bpm} BPM</span>
+                        <span>•</span>
+                        <span>{track.key}</span>
+                        <span>•</span>
+                        <span>{track.duration}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Waveform Scrubber Column */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-center pt-1 lg:pt-0">
+                    <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-[#8E95A5] mb-1">
+                      <span className="truncate pr-2">
+                        {isCurrentPlaying ? (
+                          <span className="text-[#FF2E4D] flex items-center gap-1.5 font-semibold">
+                            <LiveEqualizer active={true} barCount={4} />
+                            LIVE AUDITION
+                          </span>
+                        ) : (
+                          track.mood
+                        )}
+                      </span>
+                      <span className="hidden sm:inline opacity-60 flex-shrink-0">{track.scenes[0]}</span>
+                    </div>
+
+                    <Waveform
+                      bars={track.waveform}
+                      active={isCurrentPlaying}
+                      color="#FF2E4D"
+                      height={24}
+                      onSeek={(ratio) => handleSeekTrack(track, ratio)}
+                    />
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-between lg:justify-end gap-2 sm:gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-white/5">
+                    <button
+                      onClick={() => setExpandedTrackId(isExpanded ? null : track.id)}
+                      className="flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 sm:py-2 font-mono text-xs text-[#8E95A5] transition-colors hover:text-white"
+                    >
+                      <Layers className="h-3.5 w-3.5 text-[#F59E0B]" />
+                      <span>{track.stems.length} Stems</span>
+                    </button>
+
+                    <button
+                      onClick={() => onRequestLicense(track)}
+                      className="flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-1.5 sm:px-4 sm:py-2 font-display text-xs font-bold uppercase tracking-wider text-[#07080B] transition-colors hover:bg-[#FF2E4D] hover:text-white"
+                    >
+                      <span>License</span>
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                 </div>
 
-                {/* Meta */}
-                <div className="flex items-center justify-between gap-3 sm:flex-shrink-0">
-                  <div className="flex items-center gap-4 text-xs text-pitch-gray">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" />
-                      {track.duration}
-                    </span>
-                    <span className="hidden items-center gap-1.5 sm:flex">
-                      <Music4 className="h-3.5 w-3.5" />
-                      {track.bpm} BPM
-                    </span>
+                {/* Expanded Stems Drawer */}
+                {isExpanded && (
+                  <div className="mt-3.5 pt-3.5 border-t border-white/10 grid gap-3 sm:gap-4 sm:grid-cols-2 text-xs">
+                    <div>
+                      <span className="font-mono text-[#8E95A5] uppercase tracking-wider block mb-1 text-[11px]">
+                        Scene Description:
+                      </span>
+                      <p className="text-white/90 leading-relaxed text-xs">{track.description}</p>
+                    </div>
+
+                    <div>
+                      <span className="font-mono text-[#8E95A5] uppercase tracking-wider block mb-1 text-[11px]">
+                        Available Isolated Stems:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        {track.stems.map((stem, i) => (
+                          <span
+                            key={i}
+                            className="rounded-lg border border-white/5 bg-black/40 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] text-white"
+                          >
+                            ✓ {stem}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => onRequestLicense(track)}
-                    className="rounded-full border border-white/15 px-5 py-2 text-sm font-semibold text-pitch-white transition-all duration-300 hover:border-pitch-red hover:bg-pitch-red hover:text-white"
-                  >
-                    Request License
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-
-          {filteredTracks.length === 0 && (
-            <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
-              <Search className="h-10 w-10 text-pitch-gray/40" />
-              <p className="text-lg text-pitch-gray">No tracks found. Try a different search or filter.</p>
-            </div>
-          )}
-        </div>
-
-        {/* Demo note */}
-        <p className="mt-8 flex items-center justify-center gap-2 text-center text-sm text-pitch-gray/60">
-          <Sparkles className="h-4 w-4 text-pitch-blue" />
-          Catalog content shown is demonstration data, pending the official catalog upload.
-        </p>
-
-        {/* CTA */}
-        <div className="mt-10 text-center">
-          <button
-            onClick={() => onRequestLicense(TRACKS[0])}
-            className="group inline-flex items-center gap-2 rounded-full border border-pitch-red/30 bg-pitch-red/10 px-8 py-4 text-base font-semibold text-pitch-white transition-all duration-300 hover:border-pitch-red hover:bg-pitch-red hover:shadow-lg hover:shadow-pitch-red/30"
-          >
-            Request Full Catalog Access
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -1,127 +1,104 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, ChevronDown, Play } from 'lucide-react';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, ShieldCheck, Clock, Disc3 } from 'lucide-react';
 import { scrollToSection } from '@/lib/utils';
-import { AnimatedWave } from '@/components/Waveform';
 
 export default function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Smooth scroll parallax optimized for GPU compositing
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '16%']);
+
   return (
-    <section id="home" className="relative min-h-screen w-full overflow-hidden">
-      {/* Background layers */}
-      <div className="absolute inset-0 bg-pitch-black">
-        {/* Gradient glow top-left */}
-        <div
-          className="absolute -left-40 -top-40 h-[600px] w-[600px] rounded-full opacity-30 blur-[120px]"
-          style={{ background: 'radial-gradient(circle, #E51B36 0%, transparent 70%)' }}
+    <section
+      id="hero"
+      ref={containerRef}
+      className="relative min-h-[80vh] sm:min-h-[85vh] w-full overflow-hidden bg-[#07080B] flex flex-col justify-center py-16 sm:py-28"
+    >
+      {/* Background Image with GPU-accelerated parallax */}
+      <motion.div
+        style={{ y: backgroundY }}
+        className="absolute inset-0 z-0 origin-center pointer-events-none will-change-transform transform-gpu"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1920&q=80"
+          alt="Analogue recording studio console"
+          decoding="async"
+          loading="eager"
+          className="h-full w-full object-cover object-center filter brightness-[0.24] contrast-[1.1]"
         />
-        {/* Gradient glow bottom-right */}
-        <div
-          className="absolute -bottom-40 -right-40 h-[700px] w-[700px] rounded-full opacity-25 blur-[130px]"
-          style={{ background: 'radial-gradient(circle, #168BFF 0%, transparent 70%)' }}
-        />
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px',
-          }}
-        />
-        {/* Floating orbs */}
-        <div className="absolute left-10 top-1/3 h-32 w-32 animate-float-slow rounded-full bg-pitch-red/10 blur-3xl" />
-        <div className="absolute right-20 top-1/4 h-40 w-40 animate-float-slow-2 rounded-full bg-pitch-blue/10 blur-3xl" />
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07080B] via-[#07080B]/60 to-[#07080B]/40" />
+      </motion.div>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-5 pt-24 pb-16 text-center sm:px-8">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="mb-6 text-xs font-semibold tracking-[0.3em] text-pitch-gray sm:text-sm"
-        >
-          <span className="text-pitch-red">●</span> INDEPENDENT MUSIC PUBLISHING &amp; SYNC LICENSING
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2 }}
-          className="max-w-4xl font-heading text-4xl font-bold leading-[1.1] tracking-tight text-pitch-white sm:text-5xl md:text-6xl lg:text-7xl"
-        >
-          THE{' '}
-          <span className="relative">
-            <span className="text-gradient-red">PERFECT SOUND</span>
+      {/* Hero Content */}
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-8 text-center">
+        {/* Subtle Category Pill */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 sm:px-4 sm:py-1.5 backdrop-blur-md mb-6 sm:mb-8">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#FF2E4D]" />
+          <span className="font-mono text-[10px] sm:text-xs font-medium tracking-widest uppercase text-white/80">
+            INDEPENDENT MUSIC PUBLISHING &amp; SYNC REPERTOIRE
           </span>
-          .<br />
-          FOR EVERY STORY.
-        </motion.h1>
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-8 max-w-2xl text-base leading-relaxed text-pitch-gray sm:text-lg"
-        >
-          Discover music that moves stories forward. Perfect Pitch Foreva Publishing connects
-          powerful, sync-ready music with filmmakers, brands, music supervisors, and creative
-          visionaries.
-        </motion.p>
+        {/* Primary Editorial Headline */}
+        <h1 className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white leading-[1.06] sm:leading-[1.03]">
+          SOUND THAT <br />
+          <span className="text-gradient-red">DEFINES SCENES</span>.
+        </h1>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.55 }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
-        >
+        {/* Spacious Subtitle */}
+        <p className="mx-auto mt-5 sm:mt-8 max-w-2xl text-sm sm:text-lg leading-relaxed text-[#A4A9B5] px-2 sm:px-0">
+          Over 250+ sync-ready master recordings pre-cleared for film, television, advertising,
+          and digital media. 100% one-stop ownership with guaranteed 24-hour turnaround.
+        </p>
+
+        {/* Focused CTAs */}
+        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
           <button
             onClick={() => scrollToSection('catalog')}
-            className="group flex w-full items-center justify-center gap-2 rounded-full bg-pitch-red px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:bg-[#ff3349] hover:shadow-xl hover:shadow-pitch-red/30 sm:w-auto"
+            className="group flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[#FF2E4D] px-6 py-3.5 sm:px-8 sm:py-4 font-display text-xs font-bold uppercase tracking-wider text-white shadow-xl shadow-[#FF2E4D]/25 transition-all hover:bg-[#ff425f]"
           >
-            Explore Our Catalog
+            <span>Explore 250+ Master Tracks</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </button>
+
           <button
             onClick={() => scrollToSection('contact')}
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-white/20 px-8 py-4 text-base font-semibold text-pitch-white transition-all duration-300 hover:border-pitch-white hover:bg-white/5 sm:w-auto"
+            className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 sm:px-8 sm:py-4 font-display text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md transition-all hover:bg-white/10"
           >
-            <Play className="h-4 w-4 fill-current" />
-            Request Licensing
+            <span>Request Licensing Quote</span>
           </button>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-12 flex flex-col items-center gap-6"
-        >
-          <div className="flex items-center gap-4">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent to-pitch-red/50" />
-            <span className="text-sm font-semibold tracking-wider text-pitch-white">
-              250+ TRACKS IN OUR CATALOG
-            </span>
-            <div className="h-px w-12 bg-gradient-to-l from-transparent to-pitch-red/50" />
-          </div>
-          <AnimatedWave barCount={50} color="#E51B36" opacity={0.3} className="h-10 w-full max-w-md" />
-          <AnimatedWave barCount={50} color="#168BFF" opacity={0.2} className="h-8 w-full max-w-sm" />
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.button
-        onClick={() => scrollToSection('about')}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 text-pitch-gray transition-colors hover:text-pitch-white"
-        aria-label="Scroll to about section"
-      >
-        <span className="text-xs tracking-widest">SCROLL</span>
-        <div className="relative flex h-9 w-5 justify-center rounded-full border border-pitch-gray/40">
-          <div className="mt-1.5 h-2 w-1 rounded-full bg-pitch-red animate-scroll-indicator" />
         </div>
-        <ChevronDown className="h-4 w-4" />
-      </motion.button>
+
+        {/* Clean 3-metric strip: Responsive 3-col on all screens */}
+        <div className="mt-12 sm:mt-16 grid grid-cols-3 gap-2 sm:gap-8 border-t border-white/10 pt-8 sm:pt-10 max-w-3xl mx-auto">
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl sm:text-3xl font-extrabold text-white">250+</span>
+            <span className="text-[10px] sm:text-xs text-[#8E95A5] mt-0.5 sm:mt-1 flex items-center gap-1 font-mono text-center">
+              <Disc3 className="h-3 w-3 text-[#FF2E4D] hidden xs:inline" /> Repertoire
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl sm:text-3xl font-extrabold text-white">100%</span>
+            <span className="text-[10px] sm:text-xs text-[#8E95A5] mt-0.5 sm:mt-1 flex items-center gap-1 font-mono text-center">
+              <ShieldCheck className="h-3 w-3 text-emerald-400 hidden xs:inline" /> One-Stop
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <span className="font-display text-xl sm:text-3xl font-extrabold text-white">24H</span>
+            <span className="text-[10px] sm:text-xs text-[#8E95A5] mt-0.5 sm:mt-1 flex items-center gap-1 font-mono text-center">
+              <Clock className="h-3 w-3 text-[#F59E0B] hidden xs:inline" /> SLA
+            </span>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

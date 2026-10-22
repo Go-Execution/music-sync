@@ -1,122 +1,146 @@
 import { useEffect, useState } from 'react';
-import { Menu, X, AudioLines } from 'lucide-react';
+import { Menu, X, Disc3, Sparkles } from 'lucide-react';
 import { scrollToSection } from '@/lib/utils';
+import { audioEngine } from '@/lib/audioEngine';
+import { LiveEqualizer } from './Waveform';
 
-const NAV_LINKS = [
-  { label: 'Home', id: 'home' },
-  { label: 'About', id: 'about' },
-  { label: 'Music Catalog', id: 'catalog' },
-  { label: 'Services', id: 'services' },
-  { label: 'Contact', id: 'contact' },
+const NAV_ITEMS = [
+  { label: 'Repertoire', id: 'catalog' },
+  { label: 'Placements', id: 'showcase' },
+  { label: 'One-Stop Model', id: 'services' },
+  { label: 'Licensing Desk', id: 'contact' },
 ];
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 20;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [menuOpen]);
+    const unsub = audioEngine.subscribeTrack((_, playing) => {
+      setIsAudioPlaying(playing);
+    });
+    return unsub;
+  }, []);
 
-  const handleNav = (id: string) => {
-    setMenuOpen(false);
+  const handleNavClick = (id: string) => {
+    setMobileMenuOpen(false);
     scrollToSection(id);
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'glass-nav border-b border-white/5 py-3' : 'py-5 bg-transparent'
+      className={`sticky top-0 left-0 right-0 z-40 transition-colors duration-200 will-change-transform ${
+        isScrolled
+          ? 'glass-header py-3 sm:py-3.5 shadow-2xl'
+          : 'bg-[#07080B]/80 backdrop-blur-md py-3.5 sm:py-5 border-b border-white/5'
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8">
-        {/* Logo */}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8">
+        {/* Brand Identity */}
         <button
-          onClick={() => handleNav('home')}
-          className="group flex items-center gap-3 text-left"
-          aria-label="Perfect Pitch Foreva Publishing home"
+          onClick={() => handleNavClick('hero')}
+          className="group flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none min-w-0"
+          aria-label="Perfect Pitch Foreva home"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-pitch-red to-pitch-blue/80 transition-transform duration-300 group-hover:scale-110">
-            <AudioLines className="h-5 w-5 text-white" strokeWidth={2.5} />
+          <div className="flex h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#FF2E4D] text-white shadow-md shadow-[#FF2E4D]/25 transition-transform group-hover:scale-105">
+            <Disc3 className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:rotate-45" />
           </div>
-          <div className="leading-tight">
-            <span className="block font-heading text-sm font-bold tracking-wider text-pitch-white sm:text-base">
+          <div className="min-w-0">
+            <span className="block font-display text-sm sm:text-base font-bold tracking-tight text-white leading-tight truncate">
               PERFECT PITCH FOREVA
             </span>
-            <span className="block text-[10px] font-medium tracking-[0.25em] text-pitch-gray">
-              PUBLISHING LLC
+            <span className="hidden sm:block font-mono text-[9px] uppercase tracking-[0.2em] text-[#8E95A5] truncate">
+              PUBLISHING LLC • SYNC REPERTOIRE
             </span>
           </div>
         </button>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
-          {NAV_LINKS.map((link) => (
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
+          {NAV_ITEMS.map((item) => (
             <button
-              key={link.id}
-              onClick={() => handleNav(link.id)}
-              className="group relative px-4 py-2 text-sm font-medium text-pitch-gray transition-colors duration-200 hover:text-pitch-white"
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className="font-display text-sm font-medium text-[#A4A9B5] transition-colors hover:text-white"
             >
-              {link.label}
-              <span className="absolute bottom-0 left-1/2 h-px w-0 -translate-x-1/2 bg-pitch-red transition-all duration-300 group-hover:w-2/3" />
+              {item.label}
             </button>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        {/* Right Action Buttons */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {isAudioPlaying && (
+            <div className="hidden md:flex items-center gap-2 rounded-full border border-[#FF2E4D]/30 bg-[#FF2E4D]/10 px-3 py-1 text-[#FF2E4D]">
+              <LiveEqualizer active={true} barCount={5} />
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider">AUDITIONING</span>
+            </div>
+          )}
+
+          {/* License Music Button: Visible on tablet/desktop, cleanly integrated on mobile */}
           <button
-            onClick={() => handleNav('contact')}
-            className="hidden rounded-full bg-pitch-red px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#ff3349] hover:shadow-lg hover:shadow-pitch-red/30 sm:block"
+            onClick={() => handleNavClick('contact')}
+            className="hidden sm:flex items-center gap-1.5 rounded-xl bg-[#FF2E4D] px-4 py-2 sm:px-5 sm:py-2.5 font-display text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-[#FF2E4D]/25 transition-transform hover:scale-[1.02] active:scale-95 whitespace-nowrap"
           >
-            License Music
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>License Music</span>
           </button>
 
-          {/* Hamburger */}
+          {/* Mobile Hamburger */}
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-pitch-white transition-colors hover:border-pitch-red/50 lg:hidden"
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white lg:hidden transition-colors hover:bg-white/10"
+            aria-label="Toggle navigation menu"
           >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <div
-        className={`fixed inset-0 top-0 z-40 glass-nav transition-transform duration-500 lg:hidden ${
-          menuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        style={{ paddingTop: 80 }}
-      >
-        <nav className="flex flex-col gap-2 px-6">
-          {NAV_LINKS.map((link, i) => (
-            <button
-              key={link.id}
-              onClick={() => handleNav(link.id)}
-              className="border-b border-white/5 py-4 text-left font-heading text-2xl font-semibold text-pitch-white transition-colors hover:text-pitch-red"
-              style={{ animationDelay: `${i * 50}ms` }}
-            >
-              {link.label}
-            </button>
-          ))}
-          <button
-            onClick={() => handleNav('contact')}
-            className="mt-6 rounded-full bg-pitch-red px-6 py-4 text-center text-base font-semibold text-white"
-          >
-            License Music
-          </button>
-        </nav>
-      </div>
+      {/* Mobile Drawer Menu */}
+      {mobileMenuOpen && (
+        <div className="border-b border-white/10 bg-[#07080B]/98 px-5 py-6 backdrop-blur-2xl lg:hidden">
+          <div className="flex flex-col gap-2">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className="rounded-xl px-3 py-2.5 text-left font-display text-base font-semibold text-white/90 hover:bg-white/5 hover:text-[#FF2E4D] transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
+
+            <div className="mt-3 pt-3 border-t border-white/10">
+              <button
+                onClick={() => handleNavClick('contact')}
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#FF2E4D] py-3.5 font-display text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-[#FF2E4D]/25"
+              >
+                <Sparkles className="h-4 w-4" />
+                <span>Request Sync License</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -5,42 +5,35 @@ export default {
     extend: {
       colors: {
         pitch: {
-          black: '#08090D',
-          red: '#E51B36',
-          blue: '#168BFF',
-          white: '#FFFFFF',
-          charcoal: '#151820',
-          gray: '#A4A9B5',
+          black: '#07080B',
+          dark: '#0D0F16',
+          charcoal: '#13151F',
+          surface: '#1A1D2B',
+          card: '#11131C',
+          red: '#FF2E4D',
+          crimson: '#E11D48',
+          amber: '#F59E0B',
+          gold: '#EAB308',
+          blue: '#2563EB',
+          cyan: '#06B6D4',
+          white: '#F5F5F7',
+          gray: '#8E95A5',
+          border: 'rgba(255, 255, 255, 0.08)',
         },
       },
       fontFamily: {
+        display: ['Syne', 'sans-serif'],
         heading: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       animation: {
-        'wave-pulse': 'wavePulse 1.2s ease-in-out infinite',
-        'float-slow': 'floatSlow 8s ease-in-out infinite',
-        'float-slow-2': 'floatSlow 10s ease-in-out infinite reverse',
-        'scroll-indicator': 'scrollIndicator 2s ease-in-out infinite',
-        'shimmer': 'shimmer 3s linear infinite',
+        'equalizer': 'equalizer 0.7s ease-in-out infinite alternate',
       },
       keyframes: {
-        wavePulse: {
-          '0%, 100%': { transform: 'scaleY(0.3)' },
-          '50%': { transform: 'scaleY(1)' },
-        },
-        floatSlow: {
-          '0%, 100%': { transform: 'translateY(0) translateX(0)' },
-          '33%': { transform: 'translateY(-20px) translateX(10px)' },
-          '66%': { transform: 'translateY(10px) translateX(-10px)' },
-        },
-        scrollIndicator: {
-          '0%': { transform: 'translateY(0)', opacity: '1' },
-          '100%': { transform: 'translateY(12px)', opacity: '0' },
-        },
-        shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
+        equalizer: {
+          '0%': { height: '15%' },
+          '100%': { height: '100%' },
         },
       },
     },

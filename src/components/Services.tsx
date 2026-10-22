@@ -1,116 +1,118 @@
 import { motion } from 'framer-motion';
-import { Music4, Library, MessageCircle } from 'lucide-react';
-import { useInView } from '@/lib/utils';
+import { ShieldCheck, Clock, Layers, ArrowRight, Check } from 'lucide-react';
 import { scrollToSection } from '@/lib/utils';
 
-const SERVICES = [
+const PILLARS = [
   {
-    icon: Music4,
-    title: 'Sync Licensing',
+    icon: ShieldCheck,
+    title: '100% One-Stop Ownership',
+    badge: 'LEGAL CERTAINTY',
     description:
-      'Music for film, television, advertising, and visual storytelling. Discover tracks that complement your creative vision.',
-    accent: 'red' as const,
+      'We own and administer both Master and Publishing rights for all 250+ catalog titles. One license agreement clears the entire copyright with zero co-writer delays.',
   },
   {
-    icon: Library,
-    title: 'Music Catalog Access',
+    icon: Clock,
+    title: 'Guaranteed 24-Hour SLA',
+    badge: 'RUSH CLEARANCE',
     description:
-      'Explore a growing collection of approximately 250 tracks with metadata prepared to support music discovery and synchronization opportunities.',
-    accent: 'blue' as const,
+      'Direct communication with the copyright owners. Whether facing a festival deadline or a fast-breaking trailer drop, we execute quotes and licenses within 24 hours.',
   },
   {
-    icon: MessageCircle,
-    title: 'Custom Licensing Inquiries',
+    icon: Layers,
+    title: 'Editor-Ready Stems',
+    badge: 'FULL SUITE',
     description:
-      'Connect with our team to discuss track availability, licensing needs, intended usage, and project requirements.',
-    accent: 'red' as const,
+      'Every license includes full 24-bit/48kHz WAV master files, clean instrumentals, TV sub-mixes, and isolated multi-track stems (drums, bass, leads) for precision editing.',
   },
 ];
 
-const ACCENT = {
-  red: {
-    bg: 'bg-pitch-red/10',
-    text: 'text-pitch-red',
-    border: 'group-hover:border-pitch-red/40',
-    glow: 'group-hover:shadow-pitch-red/10',
-  },
-  blue: {
-    bg: 'bg-pitch-blue/10',
-    text: 'text-pitch-blue',
-    border: 'group-hover:border-pitch-blue/40',
-    glow: 'group-hover:shadow-pitch-blue/10',
-  },
-};
-
 export default function Services() {
-  const { ref, inView } = useInView<HTMLDivElement>();
-
   return (
-    <section id="services" className="relative section-padding overflow-hidden">
-      <div
-        className="absolute right-1/3 bottom-1/4 h-80 w-80 rounded-full opacity-[0.06] blur-[100px]"
-        style={{ background: 'radial-gradient(circle, #168BFF 0%, transparent 70%)' }}
-      />
-
-      <div ref={ref} className="mx-auto max-w-7xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center"
-        >
-          <span className="text-xs font-semibold tracking-[0.3em] text-pitch-red">
-            OUR EXPERTISE
+    <section id="services" className="relative bg-[#07080B] py-16 sm:py-28 border-t border-white/5 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20">
+          <span className="font-mono text-[10px] sm:text-xs uppercase text-[#FF2E4D] tracking-widest block mb-2">
+            THE ONE-STOP MODEL
           </span>
-          <h2 className="mt-4 font-heading text-3xl font-bold leading-tight text-pitch-white sm:text-4xl md:text-5xl">
-            The Right Music. The Right Moment.
+          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold text-white">
+            BUILT TO ELIMINATE CLEARANCE FRICTION.
           </h2>
-        </motion.div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {SERVICES.map((service, i) => {
-            const accent = ACCENT[service.accent];
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }}
-                className={`group relative overflow-hidden rounded-2xl border border-white/5 bg-pitch-charcoal/50 p-8 transition-all duration-500 hover:shadow-2xl ${accent.border} ${accent.glow}`}
-              >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-white/5 transition-all duration-300 group-hover:scale-110">
-                  <div className={`flex h-full w-full items-center justify-center rounded-xl ${accent.bg}`}>
-                    <service.icon className={`h-6 w-6 ${accent.text}`} strokeWidth={1.5} />
-                  </div>
-                </div>
-                <h3 className="font-heading text-xl font-bold text-pitch-white">
-                  {service.title}
-                </h3>
-                <p className="mt-4 text-base leading-relaxed text-pitch-gray">
-                  {service.description}
-                </p>
-                {/* Hover glow line */}
-                <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-pitch-red to-pitch-blue transition-all duration-500 group-hover:w-full" />
-              </motion.div>
-            );
-          })}
+          <p className="mt-3 sm:mt-4 text-xs sm:text-base text-[#8E95A5] leading-relaxed">
+            In sync licensing, a missing split sheet or slow co-writer can halt an entire production.
+            We provide absolute copyright indemnity and instant delivery.
+          </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-12 text-center"
-        >
-          <button
-            onClick={() => scrollToSection('contact')}
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-pitch-gray transition-colors hover:text-pitch-white"
-          >
-            <span className="border-b border-pitch-red/30 pb-0.5 transition-colors group-hover:border-pitch-red">
-              Ready to discuss your project?
-            </span>
-          </button>
-        </motion.div>
+        {/* 3 Columns */}
+        <div className="grid gap-4 sm:gap-8 md:grid-cols-3">
+          {PILLARS.map((pillar, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.08 }}
+              className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#0C0E14] p-6 sm:p-10 transition-colors hover:border-white/15"
+            >
+              <div className="flex items-center justify-between mb-5 sm:mb-6">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-white/5 text-[#FF2E4D]">
+                  <pillar.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-[#8E95A5] rounded-full border border-white/10 px-2.5 py-0.5 sm:px-3 sm:py-1">
+                  {pillar.badge}
+                </span>
+              </div>
+
+              <h3 className="font-display text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
+                {pillar.title}
+              </h3>
+
+              <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
+                {pillar.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Visual Studio Strip */}
+        <div className="mt-10 sm:mt-16 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0C0E14] overflow-hidden">
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-12 lg:items-center p-6 sm:p-12">
+            <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+              <span className="font-mono text-[10px] sm:text-xs uppercase text-[#F59E0B] tracking-wider block">
+                ANALOGUE WARMTH • MODERN EDITING
+              </span>
+              <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
+                Bespoke Curation &amp; Temp-Track Adapting.
+              </h3>
+              <p className="text-xs sm:text-sm text-[#A4A9B5] leading-relaxed">
+                Have a scene where a commercial temp track is out of budget? Send us your reference cut.
+                Our in-house composers adapt arrangements, dynamics, and edit hits to match your picture seamlessly.
+              </p>
+              <div className="flex flex-wrap gap-3 sm:gap-4 pt-1 sm:pt-2 font-mono text-[11px] sm:text-xs text-white">
+                <span className="flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5 text-emerald-400" /> Free Playlist Curation
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5 text-emerald-400" /> No Sample Hold-ups
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5 text-emerald-400" /> Worldwide Indemnification
+                </span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 flex justify-start lg:justify-end pt-2 sm:pt-0">
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 sm:px-7 sm:py-4 font-display text-xs font-bold uppercase tracking-wider text-[#07080B] shadow-xl transition-colors hover:bg-[#FF2E4D] hover:text-white"
+              >
+                <span>Request Custom Pitch</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
