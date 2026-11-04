@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle2, Mail, AlertCircle, Loader2, Clock, ShieldCheck } from 'lucide-react';
+import { Send, CheckCircle2, Mail, Phone, AlertCircle, Loader2, Clock, ShieldCheck } from 'lucide-react';
 import type { Track } from '@/data/tracks';
 
 type FormState = {
@@ -144,6 +144,36 @@ export default function Contact({ preselectedTrack }: { preselectedTrack: Track 
                       className="font-mono text-xs sm:text-sm text-white hover:text-[#FF2E4D] transition-colors truncate block"
                     >
                       licensing@perfectpitchforeva.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/5 bg-[#0C0E14] p-4 sm:p-5">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-[#F59E0B]">
+                    <Phone className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="font-mono text-[10px] uppercase text-[#8E95A5] block">
+                      EXECUTIVE DESK DIRECT LINES
+                    </span>
+                    <span className="font-display text-xs sm:text-sm text-white font-bold block">
+                      Music Supervisors &amp; A&amp;R
+                    </span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 font-mono text-[11px] text-[#A4A9B5] border-t border-white/5 pt-2">
+                  <div>
+                    <span className="text-[9px] text-[#8E95A5] block uppercase">Ray Tyus</span>
+                    <a href="tel:7028065405" className="text-white hover:text-[#FF2E4D] font-bold">
+                      (702) 806-5405
+                    </a>
+                  </div>
+                  <div>
+                    <span className="text-[9px] text-[#8E95A5] block uppercase">Brence Skinner</span>
+                    <a href="tel:4692790335" className="text-white hover:text-[#FF2E4D] font-bold">
+                      (469) 279-0335
                     </a>
                   </div>
                 </div>

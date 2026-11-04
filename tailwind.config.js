@@ -29,14 +29,17 @@ export default {
       },
       animation: {
         'equalizer': 'equalizer 0.7s ease-in-out infinite alternate',
-        'spin-slow': 'spin 14s linear infinite',
-        'spin-vinyl': 'spin 3s linear infinite',
+        'spin-slow': 'spin 12s linear infinite',
+        'spin-vinyl': 'spin 2.8s linear infinite',
+        'spin-reverse-slow': 'spinReverse 18s linear infinite',
         'marquee': 'marquee 25s linear infinite',
         'marquee-reverse': 'marqueeReverse 28s linear infinite',
         'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
         'float': 'float 4s ease-in-out infinite',
         'float-delayed': 'float 5s ease-in-out 1.5s infinite',
         'beacon': 'beacon 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'text-shimmer': 'textShimmer 4s linear infinite',
+        'pulse-ring': 'pulseRing 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         equalizer: {
@@ -50,6 +53,19 @@ export default {
         marqueeReverse: {
           '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0%)' },
+        },
+        spinReverse: {
+          '0%': { transform: 'rotate(360deg)' },
+          '100%': { transform: 'rotate(0deg)' },
+        },
+        textShimmer: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '200% 50%' },
+        },
+        pulseRing: {
+          '0%': { transform: 'scale(0.95)', opacity: '0.8' },
+          '50%': { transform: 'scale(1.15)', opacity: '0.2' },
+          '100%': { transform: 'scale(0.95)', opacity: '0.8' },
         },
         pulseGlow: {
           '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },

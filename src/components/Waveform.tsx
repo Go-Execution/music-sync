@@ -89,7 +89,7 @@ export function LiveEqualizer({
   );
 }
 
-// Interactive Realistic Vinyl Disc with Concentric Grooves, Label & Tonearm Vibe
+// Interactive Realistic Vinyl Disc with Concentric Grooves, Continuous Rotation & Sheen
 export function VinylRecord({
   coverImage,
   isPlaying = false,
@@ -103,30 +103,42 @@ export function VinylRecord({
 }) {
   return (
     <div
-      className={`relative rounded-full flex-shrink-0 flex items-center justify-center select-none shadow-2xl ${className}`}
+      className={`relative rounded-full flex-shrink-0 flex items-center justify-center select-none ${className}`}
       style={{
         width: size,
         height: size,
       }}
     >
-      {/* Vinyl Disc Body with concentric groove texture */}
+      {/* Outer ambient glow halo */}
       <div
-        className={`absolute inset-0 rounded-full border border-white/10 vinyl-grooves ${
-          isPlaying ? 'animate-spin-vinyl' : ''
+        className={`absolute inset-[-4px] rounded-full transition-opacity duration-700 pointer-events-none ${
+          isPlaying ? 'opacity-80' : 'opacity-25'
         }`}
         style={{
           boxShadow: isPlaying
-            ? '0 0 35px -5px rgba(255, 46, 77, 0.4), inset 0 0 20px rgba(0,0,0,0.9)'
-            : '0 10px 25px -5px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.9)',
+            ? '0 0 45px rgba(255, 46, 77, 0.45)'
+            : '0 0 25px rgba(255, 255, 255, 0.08)',
+        }}
+      />
+
+      {/* Vinyl Disc Body with concentric groove texture and continuous spinning movement */}
+      <div
+        className={`absolute inset-0 rounded-full border border-white/10 vinyl-grooves will-change-transform transform-gpu ${
+          isPlaying ? 'animate-spin-vinyl' : 'animate-spin-slow'
+        }`}
+        style={{
+          boxShadow: isPlaying
+            ? '0 0 35px -5px rgba(255, 46, 77, 0.45), inset 0 0 25px rgba(0,0,0,0.95)'
+            : '0 10px 30px -5px rgba(0,0,0,0.85), inset 0 0 20px rgba(0,0,0,0.9)',
           transition: 'box-shadow 0.5s ease',
         }}
       >
-        {/* Subtle light sheen highlight */}
+        {/* Opposing rotating sheen highlight for 3D realism */}
         <div
-          className="absolute inset-0 rounded-full pointer-events-none opacity-30"
+          className="absolute inset-0 rounded-full pointer-events-none opacity-40 animate-spin-reverse-slow"
           style={{
             background:
-              'conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.2) 45deg, transparent 90deg, rgba(255,255,255,0.2) 225deg, transparent 270deg)',
+              'conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.25) 45deg, transparent 90deg, rgba(255,255,255,0.25) 225deg, transparent 270deg)',
           }}
         />
 
@@ -154,7 +166,7 @@ export function VinylRecord({
           )}
 
           {/* Spindle hole */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[#07080B] border border-white/20 shadow-md" />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[#07080B] border border-white/30 shadow-md" />
         </div>
       </div>
     </div>

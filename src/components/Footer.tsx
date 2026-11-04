@@ -72,17 +72,43 @@ export default function Footer() {
             <h4 className="font-mono text-xs uppercase tracking-widest text-white font-semibold">
               Licensing Desk
             </h4>
-            <div className="rounded-2xl border border-white/5 bg-[#0E1017] p-4 text-xs space-y-2 font-mono">
+            <div className="rounded-2xl border border-white/5 bg-[#0E1017] p-4 text-xs space-y-2.5 font-mono">
               <p className="text-white">Direct Supervisor Inquiries:</p>
               <a
                 href="mailto:licensing@perfectpitchforeva.com"
-                className="text-[#FF2E4D] hover:underline flex items-center gap-1"
+                className="text-[#FF2E4D] hover:underline flex items-center gap-1 font-bold"
               >
                 licensing@perfectpitchforeva.com <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
-              <p className="text-[11px] text-[#8E95A5] pt-1">
-                24-Hour turnaround for emergency film festival and broadcast trailer deliverables.
-              </p>
+              <div className="flex items-center gap-3 pt-1 text-[11px] text-[#A4A9B5] border-t border-white/5">
+                <a href="tel:7028065405" className="hover:text-white">
+                  (702) 806-5405
+                </a>
+                <span>•</span>
+                <a href="tel:4692790335" className="hover:text-white">
+                  (469) 279-0335
+                </a>
+              </div>
+              <div className="pt-2 border-t border-white/5 flex flex-wrap gap-2 text-[10px]">
+                <a
+                  href="/Perfect_Pitch_DreamWorks_EPK_Review.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-white/5 border border-white/10 px-2.5 py-1 text-white hover:bg-white/10 flex items-center gap-1"
+                >
+                  <span>Pitch Deck (PDF)</span>
+                  <ArrowUpRight className="h-3 w-3 text-[#FF2E4D]" />
+                </a>
+                <a
+                  href="https://s.disco.ac/upbmnxvaqszp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-white/5 border border-white/10 px-2.5 py-1 text-white hover:bg-white/10 flex items-center gap-1"
+                >
+                  <span>DISCO Catalog</span>
+                  <ArrowUpRight className="h-3 w-3 text-[#06B6D4]" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

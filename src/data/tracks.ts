@@ -2,7 +2,7 @@ export type Track = {
   id: string;
   title: string;
   artist: string;
-  genre: 'Hip-Hop' | 'R&B' | 'Cinematic' | 'Pop' | 'Soul' | 'Electronic';
+  genre: 'Hip-Hop' | 'R&B' | 'Cinematic' | 'Pop' | 'Soul' | 'Electronic' | 'Latin Urban' | 'Country';
   mood: string;
   duration: string;
   bpm: number;
@@ -13,7 +13,87 @@ export type Track = {
   stems: string[];
   oneStop: boolean;
   waveform: number[];
+  discoUrl?: string;
 };
+
+export const DISCO_CATALOG_URL = 'https://s.disco.ac/upbmnxvaqszp';
+export const DREAMWORKS_PDF_URL = '/Perfect_Pitch_DreamWorks_EPK_Review.pdf';
+
+export type ArtistEPK = {
+  id: string;
+  name: string;
+  title: string;
+  genre: string;
+  heroImage: string;
+  bio: string;
+  followersTikTok: string;
+  likesTikTok: string;
+  followersInstagram: string;
+  handleInstagram: string;
+  leadReleases: string[];
+  producerOrCollab: string;
+  riyl: string[];
+  licensingHighlights: string[];
+  idealScenes: string[];
+  discoUrl: string;
+};
+
+export const FEATURED_EPKS: ArtistEPK[] = [
+  {
+    id: 'braedn-lance',
+    name: 'Braedn Lance',
+    title: 'Singer | Songwriter | Entrepreneur',
+    genre: 'Country & R&B Blend',
+    heroImage: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1000&q=80',
+    bio: 'Braedn Lance is a passionate and energetic singer blending country and R&B influences. Known for his strong character and love for connecting through music, he debuted in 2022 with "4 REAL" alongside Ty March. In 2025, he released "Big Texas", a bold anthem that celebrates Texas pride and dynamic vocal presence. Backed by Perfect Pitch Foreva.',
+    followersTikTok: '161k+',
+    likesTikTok: '2.5M+',
+    followersInstagram: '16.4k',
+    handleInstagram: '@braednlance',
+    leadReleases: ['Big Texas (2025 Lead Anthem)', '4 REAL ft. Ty March (Debut Single)'],
+    producerOrCollab: 'Perfect Pitch Publishing',
+    riyl: ['Morgan Wallen', 'Kane Brown', 'Sam Hunt', 'Breland'],
+    licensingHighlights: [
+      '100% Master & Publishing Pre-Cleared',
+      'Full Mix, Instrumental, TV Clean & Isolated Stems',
+      'Broadcast-Ready Pro Mastered Audio',
+    ],
+    idealScenes: [
+      'Heartland & Southern Dramas',
+      'Sports Anthems & Rodeo Broadcasts',
+      'Americana Lifestyle Commercials',
+      'Summer Youth Culture Promos',
+    ],
+    discoUrl: 'https://s.disco.ac/upbmnxvaqszp',
+  },
+  {
+    id: 'manuel-love',
+    name: 'Manuel Love',
+    title: 'Flagship Latin Urban & Caribbean Trap Artist',
+    genre: 'Latin Urban / Reggaeton / Melodic Street',
+    heroImage: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1000&q=80',
+    bio: 'From Puerto Plata, Dominican Republic to the world. Manuel Love is an emerging urban Latin artist fusing Latin rhythms with honest, vibrant storytelling that reflects his Caribbean roots. In March 2025, he released his debut EP "RODIO", produced by Dekumpozed (respected Texas-based producer/A&R), backed by U.S. creative publishing house Perfect Pitch.',
+    followersTikTok: '90k+',
+    likesTikTok: '800k+',
+    followersInstagram: '25k+',
+    handleInstagram: '@manuelloveofficial',
+    leadReleases: ['Romo & Musica', 'Sin Amor', 'Mi Dia', 'Debut EP: RODIO (Prod. Dekumpozed)'],
+    producerOrCollab: 'Dekumpozed (Texas Production / A&R)',
+    riyl: ['Bad Bunny', 'Jhay Cortez', 'Myke Towers', 'El Alfa', 'Sech'],
+    licensingHighlights: [
+      '100% Master and Publishing Controlled',
+      'Full Mix, Instrumental, Clean Version & Stems',
+      'Direct Clearance via Perfect Pitch One-Stop Desk',
+    ],
+    idealScenes: [
+      'Global Spanish & Latin Urban Series',
+      'High-Energy Action & Street Racing Sequences',
+      'Romantic Dramas & Telenovela Dialogue Peaks',
+      'Sports Promos & Youth Apparel Campaigns',
+    ],
+    discoUrl: 'https://s.disco.ac/upbmnxvaqszp',
+  },
+];
 
 export const TRACKS: Track[] = [
   {
@@ -31,6 +111,41 @@ export const TRACKS: Track[] = [
     stems: ['Drums', '808 Bass', 'Brass & Strings', 'Vocal Chants'],
     oneStop: true,
     waveform: [0.35, 0.6, 0.85, 0.45, 0.95, 0.7, 0.4, 0.8, 0.55, 0.9, 0.5, 0.85, 0.65, 0.35, 0.6, 0.75, 0.95, 0.6, 0.35, 0.7, 0.85, 0.45, 0.75, 0.55],
+    discoUrl: DISCO_CATALOG_URL,
+  },
+  {
+    id: 't-bl1',
+    title: 'Big Texas',
+    artist: 'Braedn Lance',
+    genre: 'Country',
+    mood: 'Bold • Energetic • Heartland Anthem',
+    duration: '3:18',
+    bpm: 114,
+    key: 'G Major',
+    coverImage: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
+    description: 'Big acoustic drive, modern R&B drums, and rich southern storytelling. Featured artist in the Perfect Pitch DreamWorks executive EPK.',
+    scenes: ['Heartland Dramas', 'Southern Sports Broadcasts', 'Summer Lifestyle Commercials'],
+    stems: ['Acoustic Guitars', 'R&B Drum Kit', 'Lead & Harmony Vocals', 'Bassline'],
+    oneStop: true,
+    waveform: [0.5, 0.8, 0.9, 0.6, 0.85, 0.7, 0.5, 0.9, 0.6, 0.75, 0.85, 0.6, 0.7, 0.9, 0.8, 0.65, 0.85, 0.7, 0.6, 0.8, 0.95, 0.7, 0.6, 0.4],
+    discoUrl: DISCO_CATALOG_URL,
+  },
+  {
+    id: 't-ml1',
+    title: 'Romo & Musica',
+    artist: 'Manuel Love (Prod. Dekumpozed)',
+    genre: 'Latin Urban',
+    mood: 'Street Romantic • Caribbean Grit • Viral Energy',
+    duration: '3:32',
+    bpm: 96,
+    key: 'A Minor',
+    coverImage: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80',
+    description: 'Sensual dembow rhythm, melodic urban flow, and lush synths. Lead anthem from Manuel Love\'s RODIO EP, backed by Perfect Pitch.',
+    scenes: ['Latin Series & Features', 'Nightlife & Beach Sequences', 'Automotive Lifestyle Spots'],
+    stems: ['Dembow Beat', '808 Sub', 'Melodic Synths & Plucks', 'Lead Vocal Stems'],
+    oneStop: true,
+    waveform: [0.6, 0.75, 0.9, 0.5, 0.85, 0.7, 0.6, 0.95, 0.7, 0.8, 0.6, 0.85, 0.75, 0.9, 0.65, 0.8, 0.7, 0.85, 0.6, 0.75, 0.9, 0.8, 0.6, 0.5],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't2',
@@ -47,6 +162,7 @@ export const TRACKS: Track[] = [
     stems: ['Lead Vocal', 'Electric Piano', 'Warm Bass', 'Rim & Percussion'],
     oneStop: true,
     waveform: [0.5, 0.7, 0.45, 0.65, 0.35, 0.85, 0.55, 0.45, 0.75, 0.35, 0.65, 0.55, 0.85, 0.45, 0.35, 0.65, 0.55, 0.75, 0.45, 0.85, 0.35, 0.55, 0.65, 0.45],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't3',
@@ -63,6 +179,7 @@ export const TRACKS: Track[] = [
     stems: ['Full Strings', 'Brass Ensemble', 'Epic Percussion', 'Synthesizer Sub-layer'],
     oneStop: true,
     waveform: [0.25, 0.45, 0.65, 0.85, 0.55, 0.95, 0.75, 0.45, 0.35, 0.95, 0.65, 0.85, 0.55, 0.75, 0.35, 0.95, 0.45, 0.65, 0.85, 0.55, 0.75, 0.35, 0.95, 0.55],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't4',
@@ -79,6 +196,7 @@ export const TRACKS: Track[] = [
     stems: ['Guitars', 'Lead Synths', 'Drums & Bass', 'Vocal Chops'],
     oneStop: true,
     waveform: [0.65, 0.45, 0.85, 0.55, 0.35, 0.75, 0.95, 0.45, 0.65, 0.55, 0.85, 0.35, 0.75, 0.55, 0.95, 0.45, 0.65, 0.85, 0.35, 0.55, 0.75, 0.45, 0.95, 0.65],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't5',
@@ -95,6 +213,7 @@ export const TRACKS: Track[] = [
     stems: ['Wurlitzer & Piano', 'Horns', 'Live Rhythm Section', 'Acoustic Guitars'],
     oneStop: true,
     waveform: [0.45, 0.65, 0.35, 0.75, 0.55, 0.85, 0.45, 0.65, 0.35, 0.55, 0.75, 0.45, 0.85, 0.65, 0.35, 0.55, 0.75, 0.45, 0.65, 0.85, 0.55, 0.35, 0.75, 0.55],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't6',
@@ -111,6 +230,7 @@ export const TRACKS: Track[] = [
     stems: ['Modular Sequences', 'Sub Bass', 'Glitches & Hits', 'Industrial Beat'],
     oneStop: true,
     waveform: [0.75, 0.95, 0.55, 0.85, 0.45, 0.65, 0.95, 0.35, 0.75, 0.55, 0.85, 0.45, 0.65, 0.95, 0.55, 0.75, 0.35, 0.85, 0.65, 0.45, 0.95, 0.55, 0.75, 0.35],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't7',
@@ -127,6 +247,7 @@ export const TRACKS: Track[] = [
     stems: ['Solo Cello', 'Atmospheric Swells', 'Sub Drone', 'Textural Percussion'],
     oneStop: true,
     waveform: [0.2, 0.3, 0.4, 0.6, 0.7, 0.5, 0.6, 0.8, 0.9, 0.6, 0.4, 0.5, 0.7, 0.8, 0.5, 0.4, 0.3, 0.5, 0.6, 0.4, 0.3, 0.2, 0.4, 0.3],
+    discoUrl: DISCO_CATALOG_URL,
   },
   {
     id: 't8',
@@ -143,10 +264,21 @@ export const TRACKS: Track[] = [
     stems: ['808 & Kick', 'Hi-Hats & Snare', 'Horn Hooks', 'SFX Risers'],
     oneStop: true,
     waveform: [0.8, 0.5, 0.9, 0.7, 0.4, 0.8, 0.6, 0.9, 0.4, 0.7, 0.8, 0.5, 0.9, 0.6, 0.4, 0.8, 0.7, 0.9, 0.5, 0.8, 0.6, 0.9, 0.4, 0.7],
+    discoUrl: DISCO_CATALOG_URL,
   },
 ];
 
-export const GENRE_FILTERS = ['All Tracks', 'Cinematic', 'Hip-Hop', 'R&B', 'Soul', 'Electronic', 'Pop'] as const;
+export const GENRE_FILTERS = [
+  'All Tracks',
+  'Cinematic',
+  'Hip-Hop',
+  'Latin Urban',
+  'Country',
+  'R&B',
+  'Soul',
+  'Electronic',
+  'Pop',
+] as const;
 export type GenreFilter = (typeof GENRE_FILTERS)[number];
 
 export type PlacementShowcase = {

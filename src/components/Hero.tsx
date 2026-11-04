@@ -175,15 +175,42 @@ export default function Hero({
 
               {/* Central Interactive Spinning Vinyl Turntable Station */}
               <div className="relative py-6 flex flex-col items-center justify-center">
-                {/* Ambient dynamic glow halo behind vinyl */}
-                <div
-                  className={`absolute h-48 w-48 rounded-full transition-all duration-700 pointer-events-none ${
-                    isThisPlaying ? 'bg-[#FF2E4D]/30 blur-2xl scale-125' : 'bg-white/5 blur-xl'
-                  }`}
-                />
+                {/* Turntable Platter Outer Orbital Rings & Strobe Marks */}
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+                  {/* Rotating Strobe Dash Ring (Technics 1200 style) */}
+                  <div className="h-64 w-64 sm:h-72 sm:w-72 rounded-full border border-dashed border-white/15 animate-spin-reverse-slow" />
+                  {/* Subtle Outer Metal Platter Rim */}
+                  <div className="absolute h-[242px] w-[242px] rounded-full border border-white/20 bg-gradient-to-b from-white/5 to-transparent" />
+                  {/* Ambient dynamic glow halo behind vinyl */}
+                  <div
+                    className={`absolute h-48 w-48 rounded-full transition-all duration-700 ${
+                      isThisPlaying ? 'bg-[#FF2E4D]/35 blur-2xl scale-125' : 'bg-white/5 blur-xl'
+                    }`}
+                  />
+                </div>
+
+                {/* Mechanical Studio Tonearm Overlay */}
+                <div className="absolute top-2 right-4 sm:right-10 z-20 pointer-events-none hidden xs:flex flex-col items-end">
+                  {/* Tonearm Gimbal Pivot */}
+                  <div className="h-6 w-6 rounded-full bg-gradient-to-br from-[#35394B] to-[#121420] border border-white/30 shadow-lg flex items-center justify-center">
+                    <div className="h-2 w-2 rounded-full bg-[#FF2E4D] shadow-[0_0_8px_#FF2E4D]" />
+                  </div>
+                  {/* Tonearm Wand */}
+                  <div
+                    className={`w-[2px] h-20 sm:h-24 bg-gradient-to-b from-[#A4A9B5] via-[#E2E8F0] to-[#FF2E4D] origin-top transition-transform duration-700 shadow-md ${
+                      isThisPlaying ? 'rotate-[26deg]' : 'rotate-[12deg]'
+                    }`}
+                    style={{ transformOrigin: 'top center' }}
+                  >
+                    {/* Cartridge & Stylus Light */}
+                    <div className="absolute -bottom-1.5 -left-1.5 h-3.5 w-3.5 rounded-sm bg-[#11131C] border border-white/40 flex items-center justify-center shadow-lg">
+                      <span className={`h-1.5 w-1.5 rounded-full ${isThisPlaying ? 'bg-[#FF2E4D] animate-ping' : 'bg-emerald-400'}`} />
+                    </div>
+                  </div>
+                </div>
 
                 {/* Turntable Disc with Play / Pause trigger */}
-                <div className="relative group cursor-pointer" onClick={handleTogglePlay}>
+                <div className="relative group cursor-pointer z-10" onClick={handleTogglePlay} title="Click to audition master recording">
                   <VinylRecord
                     coverImage={activeTrack.coverImage}
                     isPlaying={isThisPlaying}
@@ -202,8 +229,20 @@ export default function Hero({
                   </div>
                 </div>
 
+                {/* RPM & Drive Status Strip */}
+                <div className="mt-3 flex items-center gap-2 font-mono text-[9px] uppercase tracking-wider text-white/50">
+                  <span className="flex items-center gap-1 text-[#F59E0B]">
+                    <span className={`h-1.5 w-1.5 rounded-full ${isThisPlaying ? 'bg-[#FF2E4D] animate-pulse' : 'bg-emerald-400'}`} />
+                    <span>33⅓ RPM</span>
+                  </span>
+                  <span>•</span>
+                  <span>DIRECT DRIVE MOTOR</span>
+                  <span>•</span>
+                  <span>PITCH SYNC 0.0%</span>
+                </div>
+
                 {/* Active Track Title & Stems Pill */}
-                <div className="mt-5 text-center">
+                <div className="mt-3 text-center">
                   <span className="font-mono text-[10px] uppercase font-bold text-[#FF2E4D] tracking-widest">
                     {activeTrack.genre} • ONE-STOP PRE-CLEARED
                   </span>

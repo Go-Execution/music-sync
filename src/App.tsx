@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import MusicTicker from '@/components/MusicTicker';
 import MusicCatalog from '@/components/MusicCatalog';
+import ExecutivePresentation from '@/components/ExecutivePresentation';
 import Showcase from '@/components/Showcase';
 import Services from '@/components/Services';
 import Contact from '@/components/Contact';
@@ -40,6 +41,11 @@ export default function App() {
         />
         <MusicTicker />
         <MusicCatalog
+          onRequestLicense={handleRequestLicense}
+          currentPlayingTrack={currentTrack}
+          isPlaying={isPlaying}
+        />
+        <ExecutivePresentation
           onRequestLicense={handleRequestLicense}
           currentPlayingTrack={currentTrack}
           isPlaying={isPlaying}
