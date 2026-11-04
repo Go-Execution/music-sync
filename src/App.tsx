@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+import MusicTicker from '@/components/MusicTicker';
 import MusicCatalog from '@/components/MusicCatalog';
 import Showcase from '@/components/Showcase';
 import Services from '@/components/Services';
@@ -32,7 +33,12 @@ export default function App() {
     <div className="relative min-h-screen bg-[#07080B] text-[#A4A9B5] overflow-x-hidden selection:bg-[#FF2E4D] selection:text-white">
       <Header />
       <main>
-        <Hero />
+        <Hero
+          currentPlayingTrack={currentTrack}
+          isPlaying={isPlaying}
+          onRequestLicense={handleRequestLicense}
+        />
+        <MusicTicker />
         <MusicCatalog
           onRequestLicense={handleRequestLicense}
           currentPlayingTrack={currentTrack}
