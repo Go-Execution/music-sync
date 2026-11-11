@@ -3,6 +3,7 @@ import { Menu, X, Sparkles } from 'lucide-react';
 import { scrollToSection } from '@/lib/utils';
 import { audioEngine } from '@/lib/audioEngine';
 import { LiveEqualizer } from './Waveform';
+import BrandLogo from './BrandLogo';
 
 const NAV_ITEMS = [
   { label: 'Repertoire', id: 'catalog' },
@@ -50,49 +51,18 @@ export default function Header() {
     <header
       className={`sticky top-0 left-0 right-0 z-40 transition-colors duration-200 will-change-transform ${
         isScrolled
-          ? 'glass-header py-3 sm:py-3.5 shadow-2xl'
-          : 'bg-[#07080B]/80 backdrop-blur-md py-3.5 sm:py-5 border-b border-white/5'
+          ? 'glass-header py-2 sm:py-2.5 shadow-2xl'
+          : 'bg-[#07080B]/80 backdrop-blur-md py-2.5 sm:py-3 border-b border-white/5'
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8">
-        {/* Dynamic Animated Brand Identity */}
+        {/* Animated Brand Logo */}
         <button
           onClick={() => handleNavClick('hero')}
-          className="group flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none min-w-0"
+          className="group flex items-center text-left focus:outline-none flex-shrink-0"
           aria-label="Perfect Pitch Foreva home"
         >
-          {/* Animated Mini Vinyl Emblem with Rotating Strobe Ring */}
-          <div className="relative flex h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 items-center justify-center">
-            {/* Outer Orbiting Dashed Ring */}
-            <div className="absolute inset-0 rounded-full border border-dashed border-[#FF2E4D]/40 animate-spin-reverse-slow" />
-            
-            {/* Spinning Vinyl Core */}
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-[#121420] border border-white/20 shadow-md shadow-[#FF2E4D]/30 flex items-center justify-center animate-spin-slow overflow-hidden">
-              {/* Vinyl Groove texture lines */}
-              <div className="absolute inset-0.5 rounded-full border border-white/10" />
-              <div className="absolute inset-1.5 rounded-full border border-white/10" />
-              {/* Red Center Label */}
-              <div className="h-3.5 w-3.5 rounded-full bg-[#FF2E4D] flex items-center justify-center shadow-inner">
-                <span className="h-1 w-1 rounded-full bg-white animate-pulse" />
-              </div>
-            </div>
-          </div>
-
-          {/* Animated Text Block */}
-          <div className="min-w-0 flex flex-col justify-center">
-            {/* Main Title with Continuous Traveling Light Wave */}
-            <span className="block font-display text-sm sm:text-base font-extrabold tracking-tight leading-tight animate-logo-shimmer select-none">
-              PERFECT PITCH FOREVA
-            </span>
-            
-            {/* Moving Subtitle Ticker Bar */}
-            <div className="relative overflow-hidden w-40 sm:w-48 h-3.5 mt-0.5 select-none opacity-80 group-hover:opacity-100 transition-opacity">
-              <div className="animate-ticker-smooth font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.16em] text-[#A4A9B5] whitespace-nowrap">
-                <span>PUBLISHING LLC • SYNC REPERTOIRE • DREAMWORKS PITCH • 250+ TITLES • ONE-STOP • </span>
-                <span>PUBLISHING LLC • SYNC REPERTOIRE • DREAMWORKS PITCH • 250+ TITLES • ONE-STOP • </span>
-              </div>
-            </div>
-          </div>
+          <BrandLogo variant="header" />
         </button>
 
         {/* Desktop Navigation */}

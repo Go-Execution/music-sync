@@ -1,5 +1,6 @@
-import { Disc3, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { scrollToSection } from '@/lib/utils';
+import BrandLogo from './BrandLogo';
 
 export default function Footer() {
   return (
@@ -8,19 +9,13 @@ export default function Footer() {
         <div className="grid gap-8 sm:gap-10 md:grid-cols-12 pb-10 sm:pb-12 border-b border-white/5">
           {/* Brand Column */}
           <div className="md:col-span-5 space-y-3 sm:space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#FF2E4D] text-white">
-                <Disc3 className="h-4 w-4 sm:h-5 sm:w-5" />
-              </div>
-              <div>
-                <span className="font-display text-sm sm:text-base font-bold text-white block leading-tight">
-                  PERFECT PITCH FOREVA
-                </span>
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#8E95A5]">
-                  PUBLISHING LLC • REPERTOIRE
-                </span>
-              </div>
-            </div>
+            <button
+              onClick={() => scrollToSection('hero')}
+              className="group inline-flex text-left focus:outline-none"
+              aria-label="Perfect Pitch Foreva home"
+            >
+              <BrandLogo variant="footer" />
+            </button>
 
             <p className="text-xs leading-relaxed max-w-sm">
               Independent music publishing company and sync licensing catalog. Connecting 250+ pre-cleared
